@@ -2,7 +2,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include <PS4Controller.h>
+#include <ps5Controller.h>
 #include <ESP32Servo.h>
 
 extern int leftY;

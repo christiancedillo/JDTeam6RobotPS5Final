@@ -46,7 +46,7 @@ void setup() {
   setDriversEnabled(true);
 
   // 4. Initialize Bluetooth (INSERT MAC ADDRESS)
-  PS4.begin("4c:c3:82:d3:00:20"); 
+  ps5.begin("4c:c3:82:d3:00:20"); 
   Serial.println("Ready. Press PS button to connect...");
 
   // Create 4 independent, concurrent tasks
@@ -61,18 +61,18 @@ void loop() {
 
   static unsigned long lastPrint = 0;
 
-  isConnected = PS4.isConnected();
+  isConnected = ps5.isConnected();
 
   if (isConnected) {
-    leftY = PS4.LStickY();
-    rightY = PS4.RStickY();
-    l2Trigger = PS4.L2Value();
-    r2Trigger = PS4.R2Value();
-    r1Pressed = PS4.R1();
-    l1Pressed = PS4.L1();
+    leftY = ps5.LStickY();
+    rightY = ps5.RStickY();
+    l2Trigger = ps5.L2Value();
+    r2Trigger = ps5.R2Value();
+    r1Pressed = ps5.R1();
+    l1Pressed = ps5.L1();
 
     // Options button: toggle emergency stop on each new press (edge-detected)
-    bool optionsNow = PS4.Options();
+    bool optionsNow = ps5.Options();
     if (optionsNow && !lastOptions) {
       if (!estop) {
         estop = true;                // tasks see this and zero their outputs
@@ -89,10 +89,10 @@ void loop() {
     // Telemetry: print battery + stick/trigger values every 100 ms
     if (millis() - lastPrint > 100) {
       lastPrint = millis();
-      int battery = PS4.Battery();  // raw level, roughly 0 (empty) to 11 (full)
+      int battery = ps5.Battery();  // raw level, roughly 0 (empty) to 11 (full)
       int batteryPct = constrain(battery * 100 / 11, 0, 100);
       Serial.printf("Battery=%d (~%d%%)%s | LY=%d RY=%d | L2=%d R2=%d\n",
-                    battery, batteryPct, PS4.Charging() ? " charging" : "",
+                    battery, batteryPct, ps5.Charging() ? " charging" : "",
                     leftY, rightY, l2Trigger, r2Trigger);
     }
   } else {
